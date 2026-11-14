@@ -9,11 +9,17 @@ import { buildMathRound } from '../lib/mathQuestions'
 import {
   addMathStars,
   clearMathWrong,
+  getMathUnitProgress,
   markMathWrong,
   starsFromCorrect,
 } from '../lib/mathProgress'
 import { touchSession } from '../lib/progress'
-import { getNextMathUnitPath, isMathUnitUnlocked } from '../lib/unlock'
+import { getNextMathModePath } from '../lib/modeNav'
+import {
+  getNextMathUnitPath,
+  isMathUnitUnlocked,
+  isStageCleared,
+} from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 function MathVisual({
@@ -110,6 +116,14 @@ export function MathGame() {
   const [doneStars, setDoneStars] = useState<number | null>(null)
   const [locked, setLocked] = useState(false)
 
+  // 同一 MathGame 元件在換單元／題型時不會卸載，必須重設進度
+  useEffect(() => {
+    setIndex(0)
+    setScore(0)
+    setDoneStars(null)
+    setLocked(false)
+  }, [unit?.unitId, mode?.id])
+
   useEffect(() => {
     setLocked(false)
   }, [index, seed])
@@ -145,7 +159,10 @@ export function MathGame() {
   }
 
   if (doneStars !== null) {
-    const nextPath = getNextMathUnitPath(unit.unitId)
+    const progress = getMathUnitProgress(unit.unitId)
+    const stageCleared = isStageCleared(progress.modesDone, progress.modeTotal)
+    const nextModePath = getNextMathModePath(unit.unitId, mode.id)
+    const nextStagePath = getNextMathUnitPath(unit.unitId)
     return (
       <GameResult
         stars={doneStars}
@@ -157,7 +174,9 @@ export function MathGame() {
               : '沒關係，再試一次就好。'
         }
         onBack={() => navigate(`/math/${unit.unitId}`)}
-        onNext={nextPath ? () => navigate(nextPath) : undefined}
+        onNextMode={nextModePath ? () => navigate(nextModePath) : undefined}
+        stageCleared={stageCleared}
+        onNextStage={nextStagePath ? () => navigate(nextStagePath) : undefined}
       />
     )
   }

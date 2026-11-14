@@ -30,8 +30,8 @@ export const MODE_META: Record<
   },
   sentence: {
     title: '句型拼拼',
-    subtitle: '把詞卡排成一句話',
-    tag: '拼句子',
+    subtitle: '重組句子，練習課文句型',
+    tag: '重組句子',
     path: 'sentence',
   },
 }

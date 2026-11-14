@@ -77,7 +77,7 @@ export function TwReview() {
   if (done || !current) {
     return (
       <div className="panel empty">
-        <p className="prompt">複習收工！臺語佮你擊掌了</p>
+        <p className="prompt">複習收工！跟臺語擊掌啦</p>
         <Link className="btn btn-primary" to="/">
           回首頁
         </Link>

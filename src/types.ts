@@ -8,6 +8,8 @@ export type CharEntry = {
 export type SentencePattern = {
   id: string
   prompt: string
+  /** 課文提示，例如缺空句，降低一年級拼句難度 */
+  hint?: string
   tokens: string[]
   answer: string[]
 }

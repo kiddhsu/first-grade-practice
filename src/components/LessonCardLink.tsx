@@ -24,12 +24,14 @@ export function LessonCardLink({
       <div
         className="lesson-card lesson-card--locked"
         aria-disabled="true"
-        title="先玩完上一關再來挑戰"
+        title="先玩完上一關的全部玩法再來挑戰"
       >
         <span className="eyebrow">還沒解鎖</span>
         <strong>{title}</strong>
         {blurb ? <p className="card-blurb">{blurb}</p> : null}
-        <p className="muted lock-hint">先玩完上一關，再來挑戰這一關</p>
+        <p className="muted lock-hint">
+          先玩完上一關的全部玩法，再來挑戰這一關
+        </p>
       </div>
     )
   }

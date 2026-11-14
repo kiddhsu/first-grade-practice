@@ -26,7 +26,7 @@ function makeMeaning(lessonId: number, vocab: TwVocab[], item: TwVocab): TwQuest
   const choices = shuffle([item.zh, ...distractors(vocab, item, 'zh')])
   return {
     id: `tw-m-${lessonId}-${item.tw}`,
-    prompt: '這个臺語是啥物意思？',
+    prompt: '這個臺語是什麼意思？',
     highlight: item.tw,
     hint: item.roman,
     tianzi: true,
@@ -39,9 +39,9 @@ function makeSpeak(lessonId: number, vocab: TwVocab[], item: TwVocab): TwQuestio
   const choices = shuffle([item.tw, ...distractors(vocab, item, 'tw')])
   return {
     id: `tw-s-${lessonId}-${item.zh}-${item.tw}`,
-    prompt: '按呢按怎講？',
+    prompt: '這句國語用臺語怎麼說？',
     highlight: item.zh,
-    hint: '選臺語',
+    hint: '選正確的臺語詞',
     tianzi: true,
     choices,
     answer: item.tw,

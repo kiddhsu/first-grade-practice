@@ -1096,6 +1096,12 @@ button.profile-name {
   pointer-events: auto;
 }
 
+.sentence-hint {
+  text-align: center;
+  margin: -4px 0 12px;
+  font-weight: 700;
+}
+
 .token-row,
 .slot-row {
   display: flex;
@@ -1211,11 +1217,126 @@ button.profile-name {
 }
 
 .result-panel {
+  position: relative;
   text-align: center;
+  z-index: 2;
+}
+
+.result-panel--cleared {
+  border: 2px solid rgba(255, 196, 64, 0.55);
+  box-shadow:
+    0 0 0 6px rgba(255, 217, 61, 0.18),
+    0 16px 40px rgba(255, 170, 60, 0.22);
+  animation: result-panel-glow 1.6s ease-in-out infinite alternate;
 }
 
 .result-stars {
   font-size: 2.2rem;
+}
+
+.result-stars--pop {
+  font-size: 2.6rem;
+  letter-spacing: 0.12em;
+  color: #f5b400;
+  animation: result-stars-bounce 0.9s ease-out both;
+}
+
+.result-congrats {
+  margin-bottom: 4px;
+  animation: result-congrats-pop 0.55s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+.result-congrats-sub {
+  margin: 0 0 8px;
+  animation: result-congrats-pop 0.55s 0.12s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+.celebrate-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+}
+
+.confetti-burst {
+  position: absolute;
+  inset: 0;
+}
+
+.confetti-burst__piece,
+.confetti-burst__emoji {
+  position: absolute;
+  top: -8vh;
+  opacity: 0;
+  animation-name: confetti-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.confetti-burst__piece {
+  border-radius: 2px;
+}
+
+.confetti-burst__piece--round {
+  border-radius: 999px;
+}
+
+.confetti-burst__emoji {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+@keyframes confetti-fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.85;
+    transform: translate3d(var(--confetti-drift, 20px), 115vh, 0) rotate(720deg);
+  }
+}
+
+@keyframes result-stars-bounce {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes result-congrats-pop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes result-panel-glow {
+  from {
+    box-shadow:
+      0 0 0 6px rgba(255, 217, 61, 0.14),
+      0 16px 40px rgba(255, 170, 60, 0.16);
+  }
+  to {
+    box-shadow:
+      0 0 0 10px rgba(255, 217, 61, 0.28),
+      0 18px 48px rgba(255, 170, 60, 0.3);
+  }
 }
 
 .tw-highlight {

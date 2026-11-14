@@ -12,12 +12,12 @@ export type TwModeMeta = {
 export const TW_MODE_META: Record<TwModeId, Omit<TwModeMeta, 'id' | 'path'>> = {
   meaning: {
     tag: '意思',
-    title: '啥物意思',
+    title: '什麼意思',
     subtitle: '看臺語，選國語意思',
   },
   speak: {
     tag: '講法',
-    title: '按怎講',
+    title: '怎麼說',
     subtitle: '看國語，選臺語講法',
   },
   challenge: {

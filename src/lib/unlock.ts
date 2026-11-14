@@ -5,9 +5,9 @@ import { getLessonProgress } from './progress'
 import { getMathUnitProgress } from './mathProgress'
 import { getTwLessonProgress } from './twProgress'
 
-/** 上一關至少玩過 1 種玩法，就算通關可解鎖下一關 */
-export function isStageCleared(modesDone: number) {
-  return modesDone >= 1
+/** 上一關所有玩法都練過，才算通關可解鎖下一關 */
+export function isStageCleared(modesDone: number, modeTotal: number) {
+  return modeTotal > 0 && modesDone >= modeTotal
 }
 
 /**
@@ -29,7 +29,10 @@ export function getChineseUnlockMap() {
   const stages = lessons.map((l) => {
     const p = getLessonProgress(l.lessonId)
     const started = p.modesDone > 0
-    return { cleared: isStageCleared(p.modesDone), started }
+    return {
+      cleared: isStageCleared(p.modesDone, p.modeTotal),
+      started,
+    }
   })
   const flags = computeUnlocked(stages)
   const map: Record<number, boolean> = {}
@@ -43,7 +46,10 @@ export function getMathUnlockMap() {
   const stages = mathUnits.map((u) => {
     const p = getMathUnitProgress(u.unitId)
     const started = p.modesDone > 0
-    return { cleared: isStageCleared(p.modesDone), started }
+    return {
+      cleared: isStageCleared(p.modesDone, p.modeTotal),
+      started,
+    }
   })
   const flags = computeUnlocked(stages)
   const map: Record<number, boolean> = {}
@@ -57,7 +63,10 @@ export function getTwUnlockMap() {
   const stages = twLessons.map((l) => {
     const p = getTwLessonProgress(l.lessonId)
     const started = p.modesDone > 0
-    return { cleared: isStageCleared(p.modesDone), started }
+    return {
+      cleared: isStageCleared(p.modesDone, p.modeTotal),
+      started,
+    }
   })
   const flags = computeUnlocked(stages)
   const map: Record<number, boolean> = {}

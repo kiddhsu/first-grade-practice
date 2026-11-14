@@ -33,7 +33,7 @@ function loadSubject(): Subject {
 const HOME_LINE: Record<Subject, string> = {
   chinese: '選一課，把國字逗得乖乖聽話。',
   math: '選一關，把數字逗得歪七扭八。',
-  taiwanese: '選一課，共臺語耍甲足歡喜。',
+  taiwanese: '選一課，一起開心練臺語。',
 }
 
 const REVIEW_PATH: Record<Subject, string> = {

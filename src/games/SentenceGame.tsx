@@ -3,9 +3,14 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { ContinueButton } from '../components/ContinueButton'
 import { GameResult } from '../components/GameResult'
 import { getLesson } from '../content/grade1-vol1'
-import { addStars, starsFromCorrect } from '../lib/progress'
+import { addStars, getLessonProgress, starsFromCorrect } from '../lib/progress'
+import { getNextChineseModePath } from '../lib/modeNav'
 import { shuffle, speak } from '../lib/speech'
-import { getNextChineseLessonPath, isChineseLessonUnlocked } from '../lib/unlock'
+import {
+  getNextChineseLessonPath,
+  isChineseLessonUnlocked,
+  isStageCleared,
+} from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 export function SentenceGame() {
@@ -52,7 +57,6 @@ export function SentenceGame() {
     setBank(shuffle(pattern.tokens))
     setFeedback('')
     setLocked(false)
-    speak(pattern.prompt)
   }, [pattern])
 
   if (!lesson) {
@@ -69,13 +73,18 @@ export function SentenceGame() {
 
   if (done) {
     const stars = starsFromCorrect(score, patterns.length)
-    const nextPath = getNextChineseLessonPath(id)
+    const progress = getLessonProgress(id)
+    const stageCleared = isStageCleared(progress.modesDone, progress.modeTotal)
+    const nextModePath = getNextChineseModePath(id, 'sentence')
+    const nextStagePath = getNextChineseLessonPath(id)
     return (
       <GameResult
         stars={stars}
         message={`一次拼對 ${score} / ${patterns.length} 句`}
         onBack={() => navigate(`/lesson/${id}`)}
-        onNext={nextPath ? () => navigate(nextPath) : undefined}
+        onNextMode={nextModePath ? () => navigate(nextModePath) : undefined}
+        stageCleared={stageCleared}
+        onNextStage={nextStagePath ? () => navigate(nextStagePath) : undefined}
       />
     )
   }
@@ -91,7 +100,7 @@ export function SentenceGame() {
     if (ok) {
       const nextScore = score + 1
       setScore(nextScore)
-      setFeedback('拼好了！它們和好了')
+      setFeedback('排對了！句子完成')
       speak(next.join(''))
       afterCorrect(nextScore)
     } else {
@@ -111,16 +120,19 @@ export function SentenceGame() {
         </Link>
       </div>
       <header className="brand">
-        <h1>詞卡大亂鬥</h1>
+        <h1>句型拼拼</h1>
         <p>
-          {index + 1} / {patterns.length}　排完一次就定案
+          {index + 1} / {patterns.length}　重組句子　排完一次就定案
         </p>
       </header>
       <div className="panel game-stage">
         <p className="prompt">{pattern.prompt}</p>
+        {pattern.hint && (
+          <p className="muted sentence-hint">{pattern.hint}</p>
+        )}
         <div className="slot-row" aria-label="已選詞卡">
           {picked.length === 0 ? (
-            <span className="muted">點下面的詞卡，把它們叫回隊伍</span>
+            <span className="muted">依序點選語詞，排成一句話</span>
           ) : (
             picked.map((t, i) => (
               <span key={`${t}-${i}`} className="slot">
@@ -150,7 +162,7 @@ export function SentenceGame() {
             </button>
           ))}
         </div>
-        <div className={`feedback ${feedback.includes('拼好') ? 'ok' : feedback ? 'bad' : ''}`}>
+        <div className={`feedback ${feedback.includes('排對') ? 'ok' : feedback ? 'bad' : ''}`}>
           {feedback}
         </div>
         <ContinueButton

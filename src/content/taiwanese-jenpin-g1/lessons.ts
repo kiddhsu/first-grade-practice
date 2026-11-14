@@ -62,7 +62,7 @@ export const twLessons: TwLesson[] = [
     semester: '一上',
     lessonNo: 3,
     title: '鉛筆',
-    blurb: '文具盒仔裡有啥物',
+    blurb: '文具盒裡有什麼',
     theme: '文具',
     vocab: [
       { tw: '鉛筆', zh: '鉛筆', roman: 'ian-pit', emoji: '✏️' },
@@ -80,7 +80,7 @@ export const twLessons: TwLesson[] = [
     semester: '一上',
     lessonNo: 4,
     title: '鳥仔',
-    blurb: '古錐動物講看覓',
+    blurb: '可愛動物說一說',
     theme: '動物',
     vocab: [
       { tw: '鳥仔', zh: '鳥', roman: 'tsiáu-á', emoji: '🐦' },
@@ -118,7 +118,7 @@ export const twLessons: TwLesson[] = [
     semester: '一下',
     lessonNo: 1,
     title: '學校的圖書館',
-    blurb: '學校佮圖書館的語詞',
+    blurb: '學校和圖書館的語詞',
     theme: '學校生活',
     vocab: [
       { tw: '學校', zh: '學校', roman: 'ha̍k-hāu', emoji: '🏫' },
@@ -136,7 +136,7 @@ export const twLessons: TwLesson[] = [
     semester: '一下',
     lessonNo: 2,
     title: '鳥鼠食菝仔',
-    blurb: '顏色佮動物來作伙',
+    blurb: '顏色和動物一起來',
     theme: '顏色',
     vocab: [
       { tw: '紅', zh: '紅色', roman: 'âng', emoji: '🔴' },
@@ -154,7 +154,7 @@ export const twLessons: TwLesson[] = [
     semester: '一下',
     lessonNo: 3,
     title: '美麗的學校',
-    blurb: '校園裡媠媠的所在',
+    blurb: '校園裡美麗的地方',
     theme: '校園',
     vocab: [
       { tw: '美麗', zh: '美麗', roman: 'bí-lē', emoji: '✨' },
@@ -172,7 +172,7 @@ export const twLessons: TwLesson[] = [
     semester: '一下',
     lessonNo: 4,
     title: '保護目睭',
-    blurb: '愛惜咱的目睭',
+    blurb: '愛惜我們的眼睛',
     theme: '五官',
     vocab: [
       { tw: '目睭', zh: '眼睛', roman: 'ba̍k-tsiu', emoji: '👁️' },
@@ -190,7 +190,7 @@ export const twLessons: TwLesson[] = [
     semester: '一下',
     lessonNo: 5,
     title: '我的身軀',
-    blurb: '身軀各部位講予清楚',
+    blurb: '身體各部位說清楚',
     theme: '身體',
     vocab: [
       { tw: '頭', zh: '頭', roman: 'thâu', emoji: '🗣️' },

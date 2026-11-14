@@ -3,9 +3,14 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import HanziWriter from 'hanzi-writer'
 import { GameResult } from '../components/GameResult'
 import { getLesson } from '../content/grade1-vol1'
-import { addStars, markWrong } from '../lib/progress'
+import { addStars, getLessonProgress, markWrong } from '../lib/progress'
+import { getNextChineseModePath } from '../lib/modeNav'
 import { pickN, speak } from '../lib/speech'
-import { getNextChineseLessonPath, isChineseLessonUnlocked } from '../lib/unlock'
+import {
+  getNextChineseLessonPath,
+  isChineseLessonUnlocked,
+  isStageCleared,
+} from '../lib/unlock'
 
 type Phase = 'loading' | 'demo' | 'write' | 'done-char'
 
@@ -101,7 +106,7 @@ export function StrokeGame() {
     setFallback(false)
     setPhase('loading')
     setStatus('載入筆順中…')
-    speak(current)
+    speak(current, 0.65)
 
     let writer: HanziWriter
     try {
@@ -116,8 +121,8 @@ export function StrokeGame() {
         drawingWidth: 28,
         showCharacter: false,
         showOutline: true,
-        strokeAnimationSpeed: 1.2,
-        delayBetweenStrokes: 180,
+        strokeAnimationSpeed: 0.55,
+        delayBetweenStrokes: 500,
       })
       writerRef.current = writer
       playDemoThenQuiz(writer, current, gen)
@@ -153,13 +158,18 @@ export function StrokeGame() {
 
   if (done) {
     const stars = Math.max(1, Math.min(3, 1 + Math.floor(score / 2)))
-    const nextPath = getNextChineseLessonPath(id)
+    const progress = getLessonProgress(id)
+    const stageCleared = isStageCleared(progress.modesDone, progress.modeTotal)
+    const nextModePath = getNextChineseModePath(id, 'stroke')
+    const nextStagePath = getNextChineseLessonPath(id)
     return (
       <GameResult
         stars={stars}
         message={`寫對 ${score} 個字，失誤 ${mistakes} 次`}
         onBack={() => navigate(`/lesson/${id}`)}
-        onNext={nextPath ? () => navigate(nextPath) : undefined}
+        onNextMode={nextModePath ? () => navigate(nextModePath) : undefined}
+        stageCleared={stageCleared}
+        onNextStage={nextStagePath ? () => navigate(nextStagePath) : undefined}
       />
     )
   }
@@ -220,7 +230,7 @@ export function StrokeGame() {
           <button
             type="button"
             className="btn btn-sun"
-            onClick={() => current && speak(current)}
+            onClick={() => current && speak(current, 0.65)}
           >
             聽讀音
           </button>

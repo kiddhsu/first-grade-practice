@@ -104,14 +104,14 @@ function makeSplit(): MathQuestion {
   if (askLeft) {
     return {
       id: `split-l-${total}-${right}`,
-      prompt: `${total} = □ + ${right}，□ 是多少？`,
+      prompt: `${total} = □ + ${right}\n□ 是多少？`,
       choices: choicesAround(left, Array.from({ length: total + 1 }, (_, i) => i)),
       answer: String(left),
     }
   }
   return {
     id: `split-r-${total}-${left}`,
-    prompt: `${total} = ${left} + □，□ 是多少？`,
+    prompt: `${total} = ${left} + □\n□ 是多少？`,
     choices: choicesAround(right, Array.from({ length: total + 1 }, (_, i) => i)),
     answer: String(right),
   }
@@ -168,7 +168,7 @@ function makeCount30(): MathQuestion {
   const answer = start + 1
   return {
     id: `seq-${start}`,
-    prompt: `${start - 1}、${start}、□、${start + 2}，□ 是多少？`,
+    prompt: `${start - 1}、${start}、□、${start + 2}\n□ 是多少？`,
     choices: choicesAround(answer, [start - 1, start, start + 1, start + 2, start + 3]),
     answer: String(answer),
   }
@@ -340,7 +340,7 @@ function makeMissingSeq(min: number, max: number): MathQuestion {
   const miss = start + 1
   return {
     id: `miss-${start}`,
-    prompt: `${start}、□、${start + 2}、${start + 3}，□ 是多少？`,
+    prompt: `${start}、□、${start + 2}、${start + 3}\n□ 是多少？`,
     choices: choicesAround(miss, [start, start + 1, start + 2, start + 3]),
     answer: String(miss),
   }
@@ -476,7 +476,7 @@ function makerFor(kind: MathKind, mode: MathModeId): () => MathQuestion {
       const total = rand(5, 10)
       return {
         id: `zero-${total}`,
-        prompt: `${total} = ${total} + □，□ 是多少？`,
+        prompt: `${total} = ${total} + □\n□ 是多少？`,
         choices: choicesAround(0, [0, 1, total, total - 1]),
         answer: '0',
       }

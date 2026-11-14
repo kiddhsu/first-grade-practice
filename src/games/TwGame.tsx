@@ -10,11 +10,17 @@ import { buildTwRound } from '../lib/twQuestions'
 import {
   addTwStars,
   clearTwWrong,
+  getTwLessonProgress,
   markTwWrong,
   starsFromCorrect,
 } from '../lib/twProgress'
 import { touchSession } from '../lib/progress'
-import { getNextTwLessonPath, isTwLessonUnlocked } from '../lib/unlock'
+import { getNextTwModePath } from '../lib/modeNav'
+import {
+  getNextTwLessonPath,
+  isStageCleared,
+  isTwLessonUnlocked,
+} from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 export function TwGame() {
@@ -35,6 +41,14 @@ export function TwGame() {
   const [locked, setLocked] = useState(false)
 
   const q = questions[index]
+
+  // 同一 TwGame 元件在換課次／題型時不會卸載，必須重設進度
+  useEffect(() => {
+    setIndex(0)
+    setScore(0)
+    setDoneStars(null)
+    setLocked(false)
+  }, [lesson?.lessonId, mode?.id])
 
   useEffect(() => {
     setLocked(false)
@@ -71,19 +85,24 @@ export function TwGame() {
   }
 
   if (doneStars !== null) {
-    const nextPath = getNextTwLessonPath(lesson.lessonId)
+    const progress = getTwLessonProgress(lesson.lessonId)
+    const stageCleared = isStageCleared(progress.modesDone, progress.modeTotal)
+    const nextModePath = getNextTwModePath(lesson.lessonId, mode.id)
+    const nextStagePath = getNextTwLessonPath(lesson.lessonId)
     return (
       <GameResult
         stars={doneStars}
         message={
           doneStars >= 3
-            ? '講甲足𠢕，太強了！'
+            ? '講得真棒，太強了！'
             : doneStars >= 1
               ? '很棒，再玩一輪會更熟！'
               : '沒關係，再試一次就好。'
         }
         onBack={() => navigate(`/tw/${lesson.lessonId}`)}
-        onNext={nextPath ? () => navigate(nextPath) : undefined}
+        onNextMode={nextModePath ? () => navigate(nextModePath) : undefined}
+        stageCleared={stageCleared}
+        onNextStage={nextStagePath ? () => navigate(nextStagePath) : undefined}
       />
     )
   }

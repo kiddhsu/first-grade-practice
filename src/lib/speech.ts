@@ -1,9 +1,10 @@
-export function speak(text: string) {
+export function speak(text: string, rate = 0.7) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
   window.speechSynthesis.cancel()
   const utter = new SpeechSynthesisUtterance(text)
   utter.lang = 'zh-TW'
-  utter.rate = 0.9
+  /** 一年級聽讀宜慢一點；可傳 rate 微調 */
+  utter.rate = rate
   const voices = window.speechSynthesis.getVoices()
   const tw =
     voices.find((v) => v.lang === 'zh-TW') ||

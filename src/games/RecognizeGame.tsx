@@ -4,9 +4,20 @@ import { ChoiceGrid } from '../components/ChoiceGrid'
 import { ContinueButton } from '../components/ContinueButton'
 import { GameResult } from '../components/GameResult'
 import { allCharsForLesson, getLesson } from '../content/grade1-vol1'
-import { addStars, clearWrong, markWrong, starsFromCorrect } from '../lib/progress'
+import {
+  addStars,
+  clearWrong,
+  getLessonProgress,
+  markWrong,
+  starsFromCorrect,
+} from '../lib/progress'
+import { getNextChineseModePath } from '../lib/modeNav'
 import { pickN, shuffle, speak } from '../lib/speech'
-import { getNextChineseLessonPath, isChineseLessonUnlocked } from '../lib/unlock'
+import {
+  getNextChineseLessonPath,
+  isChineseLessonUnlocked,
+  isStageCleared,
+} from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 import type { CharEntry } from '../types'
 
@@ -106,13 +117,18 @@ export function RecognizeGame() {
 
   if (done) {
     const stars = starsFromCorrect(score, rounds.length)
-    const nextPath = getNextChineseLessonPath(id)
+    const progress = getLessonProgress(id)
+    const stageCleared = isStageCleared(progress.modesDone, progress.modeTotal)
+    const nextModePath = getNextChineseModePath(id, 'recognize')
+    const nextStagePath = getNextChineseLessonPath(id)
     return (
       <GameResult
         stars={stars}
         message={`一次答對 ${score} / ${rounds.length} 題`}
         onBack={() => navigate(`/lesson/${id}`)}
-        onNext={nextPath ? () => navigate(nextPath) : undefined}
+        onNextMode={nextModePath ? () => navigate(nextModePath) : undefined}
+        stageCleared={stageCleared}
+        onNextStage={nextStagePath ? () => navigate(nextStagePath) : undefined}
       />
     )
   }
